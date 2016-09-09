@@ -1,0 +1,8 @@
+<!-- XXX TODO conditional to TURN OFF theme, notdis=<%= !@theme_disabled %>, NOT blnk <%= !@siteDesign.blank? %> -->
+<!--
+THEME=
+<%= @siteDesign.to_yaml %>
+-->
+<% if(!@theme_disabled) %>
+<link rel="stylesheet" href="/multisite/site_designs/theme/<%= @siteDesign['theme'] || 'default' %>.css"/>
+<% end %>

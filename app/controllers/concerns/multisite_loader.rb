@@ -9,6 +9,7 @@ module Concerns
 				Rails.configuration.internal_domains
 			end
 			def loadSite
+
 				# get hostname/domain
 				hostParts = request.host.sub(/^www[.]/,"").split(".") # remove 'www'
 				hostname = hostParts.length > 2 ? 
@@ -38,6 +39,7 @@ module Concerns
 			end
 
 			def invalidSite
+				@branded = false
 				render 'multisite/site/not_found'
 			end
 
