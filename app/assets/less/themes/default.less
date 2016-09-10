@@ -13,144 +13,136 @@
 @bg1: #F3EBE1;
 @bg2: #F0E4CC;
 
-
-/* centered content effect, with colors stretching 100% */
-#main
-{
-	@media (min-width: 998px)
-	{
-		width: 960px;
-	}
-	margin-left: auto;
-	margin-right: auto;
-	float: none;
-}
-
-
-#main :not(.controls) > a:not(.controls)
-{
-	color: @linkcolor;
-}
-
-#main h1, 
-{
-	color: @color1darker2;
-}
-#main .widget > h3
-{
-	margin: 0;
-	padding: 0.5em 1em ;
-}
-
-#main_wrapper
-{
-	padding: 0;
+#body {
+	padding: 25px;
 	background: @bg1 svg-gradient(to bottom, @bg1, @bg2);
-}
 
-#main #header
-{
-	position: relative;
-	padding: 0px;
-	padding: 1em 0em;
-}
+	/* centered content effect, with colors stretching 100% */
+	#main
+	{
+		@media (min-width: 998px)
+		{
+			width: 960px;
+		}
+		margin-left: auto;
+		margin-right: auto;
+		float: none;
 
-#header  .title-box
-{
-	display: table-cell;
-}
+		/* Now stuff within #main */
+		h1, h1 a 
+		{
+			color: @color1darker2;
+		}
+		.widget > h3
+		{
+			margin: 0;
+			padding: 0.5em 1em ;
+		}
+		#header
+		{
+			.title-box
+			{
+				display: table-cell;
+			}
+			.subtitle
+			{
+				padding-left: 1em;
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
+			}
 
-#main #header .subtitle
-{
-	padding-left: 1em;
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
-}
+			.social-icons
+			{
+			}
+		}
 
-#main #header .right-text
-{
-	position: relative;
-}
-#main #header .social-icons
-{
-}
+		#content
+		{
+			padding: 1em 2em;
+		
+			:not(.controls) > a:not(.controls)
+			{
+				color: @linkcolor;
+			}
 
-#main .widget > h3,
-#main #navbar
-{
-	background: @color1 svg-gradient(to bottom, @color1, @color1darker2);
-	border: solid 1px @color1darker3;
-}
-#main .widget > h3,
-#main .widget > h3 a
-{
-	color: contrast(@color1);
-}
-	
-#main #navbar
-{
-}
+		}
 
-#main #navbar a
-{
-	font-size: 0.9em;
-	font-weight: bold;
-	.uppercase;
-	color: contrast(@color1);
-}
-.navbar-nav > li > a 
-{
-	padding: 10px;
-}
+		#content,
+		.widget
+		{
+			background-color: white;
+			border: solid #ccc 1px;
+			border-radius: 5px;
+		}
 
-#main #navbar a.selected,
-#main #navbar a:hover,
-#main #navbar a:active,
-#main #navbar a:focus,
-{
-	color: contrast(@color1lighter);
-	background-color: @color1lighter;
-}
-#main #navbar .dropdown-menu
-{
-	background-color: @color1darker2;
-}
+		.widget > h3,
+		#navbar
+		{
+			background: @color1 svg-gradient(to bottom, @color1, @color1darker2);
+			border: solid 1px @color1darker3;
+		}
 
-#main #main_content
-{
-	padding: 0px;
-}
+		.widget > h3,
+		.widget > h3 a
+		{
+			color: contrast(@color1);
+		}
+			
+		#navbar
+		{
+			min-height: auto;
 
-#main #main_content #content,
-#main #main_content .widget
-{
-	background-color: white;
-	border: solid #ccc 1px;
-	border-radius: 5px;
-}
+			.navbar-nav
+			{
+				a
+				{
+					font-size: 0.9em;
+					font-weight: bold;
+					.uppercase;
+					color: contrast(@color1);
+				}
+				a.selected,
+				a.active,
+				a:hover,
+				a:active,
+				a:focus
+				{
+					color: contrast(@color1lighter);
+					background-color: @color1lighter;
+				}
+				> li > a 
+				{
+					padding: 10px;
+				}
+			}
 
-#main #main_content #content
-{
-	padding: 1em 2em;
-}
+			.dropdown-menu
+			{
+				background-color: @color1darker2;
+			}
+		}
 
-h2.page-header
-{
-	border-bottom: dashed #aaa 1px;
-}
+		.page-header
+		{
+			border-bottom: 0px; /* dashed #aaa 1px; */
+		}
 
-#main #main_content .widget .btn.theme,
-#main #main_content .index .btn.theme,
-#main #main_content .view .btn.theme
-{
-	border-color: @color1darker2;
-	background-color: @color1darker;
-	color: contrast(@color1);
-}
-#main #main_content .widget a.btn.theme:hover,
-#main #main_content .index a.btn.theme:hover,
-#main #main_content .view a.btn.theme:hover
-{
-	text-decoration: none;
-	background-color: @color1lighter;
+		.widget .btn.theme,
+		.index .btn.theme,
+		.view .btn.theme
+		{
+			border-color: @color1darker2;
+			background-color: @color1darker;
+			color: contrast(@color1);
+		}
+		.widget a.btn.theme:hover,
+		.index a.btn.theme:hover,
+		.view a.btn.theme:hover
+		{
+			text-decoration: none;
+			background-color: @color1lighter;
+		}
+	}
+
+
 }

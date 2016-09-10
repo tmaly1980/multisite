@@ -5,8 +5,13 @@ module Concerns
 		included do
 			before_action :loadSite
 
+			def multisiteAbort
+				logger.fatal("Please define 'Rails.configuration.internal_domains' in config/application.rb to enable multi-site support")
+				raise Error.new("Sorry, multisite support is not enabled.")
+			end
+
 			def internalDomains
-				Rails.configuration.internal_domains
+				Rails.configuration.try(:internal_domains) || multisiteAbort # Stored in config/application.rb
 			end
 			def loadSite
 
