@@ -1,0 +1,24 @@
+<% if current_user.try(:can_admin?) %>
+	<div class='right_align'>
+		<%= edit_link("", multisite.edit_sidebar_path, "data-update": '#sidebar', class: "btn btn-warning btn-xs") %>
+	</div>
+	<% if sidebar.created_at.to_s == sidebar.updated_at.to_s # never updated %>
+		<div class='alert alert-info'>
+			<%= render 'multisite/sidebars/customize' # Customized per app %>
+		</div>
+	<% end %>
+
+<% end %>
+<!-- sidebar -->
+<% if(@sidebar.try(:title)) %>
+	<h4><%= @sidebar.title %></h4>
+<% end %>
+
+<% if(@sidebar.try(:facebook_like_box_url)) %>
+	FB - input different from header button TODO
+	<br/>
+	<%= @sidebar.facebook_like_box_url %>
+<% end %>
+<% if (@sidebar.content.try(:size)) %>
+	<%= @sidebar.content %>
+<% end %>

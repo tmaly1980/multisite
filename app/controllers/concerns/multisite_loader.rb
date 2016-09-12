@@ -39,13 +39,18 @@ module Concerns
 
 				return invalidSite if !@currentSite
 
+
 				# store site_id globally
 				ENV['multisite_site_id'] = @currentSite.id.to_s
+
+				@site_design = Multisite::SiteDesign.instance
+				@sidebar = Multisite::Sidebar.instance
+				
 			end
 
 			def invalidSite
 				@branded = false
-				render 'multisite/site/not_found'
+				render 'multisite/sites/not_found'
 			end
 
 			

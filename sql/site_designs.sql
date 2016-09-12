@@ -12,11 +12,6 @@ CREATE TABLE multisite_site_designs
   `color1` varchar(6) DEFAULT NULL,
   `color2` varchar(6) DEFAULT NULL,
 
-  `sidebar_title` varchar(128) DEFAULT NULL,
-  `sidebar_content` text,
-  /* sidebar shared on all pages? */
-  global_sidebar BOOL DEFAULT FALSE,
-
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 );

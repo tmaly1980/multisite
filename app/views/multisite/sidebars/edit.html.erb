@@ -1,0 +1,21 @@
+<!-- sidebar edit -->
+<% bootstrap_form_for @site_design, url: multisite.sidebar_path, "data-update": "#sidebar" do |f| %>
+
+	<%= title_field(f, 'title', placeholder: 'Sidebar Title') %>
+
+	DONATIONS TODO
+
+	<%= f.input :facebook_like_box_url, label: "Facebook Like box" %>
+
+	<%= f.text_area :sidebar_content, rows: 10, class: 'autogrow', label: "Additional content (ads, etc)" %>
+	<!-- XXX TODO may need to be rich editor - with minimal titlebar (paste HTML) -->
+
+<div class='row'>
+	<div class='col-xs-6 center_align'> 
+		<% f.submit 'Update Sidebar' %>
+	</div>
+	<div class='col-xs-6 center_align'> 
+		<%= link_to('Cancel', multisite.sidebar_path, "data-update": "#sidebar") %>
+	</div>
+</div>
+<% end %>

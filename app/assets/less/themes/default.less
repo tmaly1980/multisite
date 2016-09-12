@@ -33,11 +33,7 @@
 		{
 			color: @color1darker2;
 		}
-		.widget > h3
-		{
-			margin: 0;
-			padding: 0.5em 1em ;
-		}
+		
 		#header
 		{
 			.title-box
@@ -55,35 +51,33 @@
 			{
 			}
 		}
+		#crumbs .breadcrumb
+		{
+			background-color: transparent;
+		}
 
 		#content
 		{
-			padding: 1em 2em;
 		
-			:not(.controls) > a:not(.controls)
+			div.view, div.index /* NOT div.form edit */
 			{
-				color: @linkcolor;
+				:not(.controls) > a:not(.controls)
+				{
+					color: @linkcolor;
+				}
 			}
 
 		}
 
-		#content,
-		.widget
-		{
-			background-color: white;
-			border: solid #ccc 1px;
-			border-radius: 5px;
-		}
-
-		.widget > h3,
+		.widget > h4,
 		#navbar
 		{
 			background: @color1 svg-gradient(to bottom, @color1, @color1darker2);
 			border: solid 1px @color1darker3;
 		}
 
-		.widget > h3,
-		.widget > h3 a
+		.widget > h4,
+		.widget > h4 a
 		{
 			color: contrast(@color1);
 		}
