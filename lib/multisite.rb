@@ -22,12 +22,16 @@ module Multisite # SWEET!!!!
 
 		  	# NEED TO ACCOUNT FOR internal_domains
 		  	domain = default_domain(request)
+		  	STDERR.puts("DOMAIN="+domain)
+
 
 		  	if(fqdn.end_with? domain) # just hostname
 		  		fqdn.sub(domain,'') # Remove off, but returns that piece, so do two-liner
 		  		hostname = fqdn # MUST be on separate line
+			  	STDERR.puts("FQDN SHORTENED="+hostname)
 		  		return hostname
 		  	else
+		  		STDERR.puts("NOT ENDING "+fqdn+" WITH "+fqdn)
 		  		return fqdn
 		  	end
 		  	return nil
@@ -43,11 +47,16 @@ module Multisite # SWEET!!!!
 
 		def Multisite.default_domain(request)
 			domain = internal_domains[0]
+			server = http_host(request)
+			STDERR.puts("SERVER="+server)
 			internal_domains.each do |d|
-				if http_host(request).ends_with? d
+				STDERR.puts("CHECK "+server+" ENDS_WITH "+d)
+				if server.ends_with? d
+					STDERR.puts("ENDED! CLAIMING DEF="+d)
 					return d
 				end
 			end
+			STDERR.puts("DOH, DOM left="+domain)
 			return domain
 		end
 
