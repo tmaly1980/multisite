@@ -2,14 +2,16 @@ require "multisite/engine"
 
 module Multisite # SWEET!!!!
 	class Specified
-		def matches? # For router, asked for specific site
+		def self.matches?(request) # For router, asked for specific site
+			logger.debug("SPECIFYING?="+Multisite.site_specified)
 			Multisite.site_specified
 		end
 	end
 
 	class NotSpecified
-		def matches? # For router, asked for specific site
-			!Multisite.site_specified
+		def self.matches?(request) # For router, asked for specific site
+			logger.debug("NOT SPECIFYING?="+Multisite.site_specified)
+			return Multisite.site_specified == ''
 		end
 	end
 
@@ -19,10 +21,11 @@ module Multisite # SWEET!!!!
 
 		  	# NEED TO ACCOUNT FOR internal_domains
 		  	if(fqdn.end_with? default_domain) # just hostname
-		  		fqdn.sub(default_domain,'') # Remove off
+		  		return fqdn.sub(default_domain,'') # Remove off
 		  	else
-		  		domain = fqdn
+		  		return domain = fqdn
 		  	end
+		  	return nil
 		end
 
 		def Multisite.internal_domains
