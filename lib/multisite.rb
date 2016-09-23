@@ -26,7 +26,7 @@ module Multisite # SWEET!!!!
 
 
 		  	if(fqdn.end_with? domain) # just hostname
-		  		fqdn.sub(domain,'') # Remove off, but returns that piece, so do two-liner
+		  		fqdn.sub!(domain,'') # Remove off, but returns that piece, so do two-liner
 		  		hostname = fqdn # MUST be on separate line
 			  	STDERR.puts("FQDN SHORTENED="+hostname)
 		  		return hostname
