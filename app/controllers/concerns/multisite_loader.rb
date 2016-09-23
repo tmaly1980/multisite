@@ -3,35 +3,38 @@ module Concerns
 		extend ActiveSupport::Concern
 
 		included do
+			before_action :loadSiteUserSession
 			before_action :loadSite
 
-			def multisiteAbort
-				logger.fatal("Please define 'Rails.configuration.internal_domains' in config/application.rb to enable multi-site support")
-				raise Error.new("Sorry, multisite support is not enabled.")
+			def sessionKey
+				Rails.application.config.session_options[:key]
 			end
 
-			def internalDomains
-				Rails.configuration.try(:internal_domains) || multisiteAbort # Stored in config/application.rb
+			def sessionQueryString
+				sessionKey+"="+cookies[sessionKey]
 			end
+
+			def loadSiteUserSession # Might be cross-site, ie www?_rescue_session=1234 => mysite?_rescue_session=1234
+				if sessval = params[sessionKey]
+					request.session_options[:id] = sessval
+				end
+			end
+
 			def loadSite
+				sitename = Multisite.site_specified 
+				# give domain if custom (not internal), otherwise hostname, or nil if nothing
 
-				# get hostname/domain
-				hostParts = request.host.sub(/^www[.]/,"").split(".") # remove 'www'
-				hostname = hostParts.length > 2 ? 
-					hostParts.shift : '' # first piece IF more than two
-				domain = hostParts.join(".") # Rest
+				logger.debug("SITENAME="+sitename)
 
-				logger.debug "H="+hostname+", D="+domain
-				logger.debug "INTERNAL="+internalDomains.join(";")
 				# look up 
-				if(domain && !internalDomains.include?(domain))
-					logger.debug("DOM="+domain)
-					@currentSite = Multisite::Site.find_by_domain(domain)
+				if(sitename[/\./]) # Domain-y
+					logger.debug("DOMAIN="+sitename)
+					@currentSite = Multisite::Site.find_by_domain(sitename)
 					logger.debug(@currentSite)
 				end
-				if(!@currentSite && hostname) # Try next
-					logger.debug("HOST="+hostname)
-					@currentSite = Multisite::Site.find_by_hostname(hostname)
+				if(!@currentSite && sitename) # Try next
+					logger.debug("HOST="+sitename)
+					@currentSite = Multisite::Site.find_by_hostname(sitename)
 					logger.debug(@currentSite)
 				end
 				if(!@currentSite)
@@ -46,6 +49,8 @@ module Concerns
 
 				@site_design = Multisite::SiteDesign.instance
 				@sidebar = Multisite::Sidebar.instance
+
+				@default_domain = Multisite.default_domain
 				
 			end
 
