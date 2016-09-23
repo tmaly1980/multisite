@@ -33,7 +33,8 @@ module Concerns
 					logger.debug("HOST="+hostname)
 					@currentSite = Multisite::Site.find_by_hostname(hostname)
 					logger.debug(@currentSite)
-				else
+				end
+				if(!@currentSite)
 					return # www
 				end
 
