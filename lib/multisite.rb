@@ -5,26 +5,30 @@ module Multisite # SWEET!!!!
 		def self.matches?(request) # For router, asked for specific site
 			STDERR.puts("STDERR_spec="+Multisite.site_specified)
 			logger.debug("SPECIFYING?="+Multisite.site_specified)
-			Multisite.site_specified
+			Multisite.site_specified(request)
 		end
 	end
 
 	class NotSpecified
 		def self.matches?(request) # For router, asked for specific site
 			logger.debug("NOT SPECIFYING?="+Multisite.site_specified)
-			return Multisite.site_specified == ''
+			return (Multisite::Specified.matches? request).empty?
 		end
 	end
 
-		def Multisite.site_specified # give domain if custom (not internal), otherwise hostname, or nil if on www
+		def Multisite.site_specified(request) # give domain if custom (not internal), otherwise hostname, or nil if on www
 			STDERR.puts("SITE_SPEC!!!")
 			fqdn = request.host.sub(/^www[.]/,"") # remove 'www'
 
 		  	# NEED TO ACCOUNT FOR internal_domains
-		  	if(fqdn.end_with? default_domain) # just hostname
-		  		return fqdn.sub(default_domain,'') # Remove off
+		  	domain = default_domain(request)
+
+		  	if(fqdn.end_with? domain) # just hostname
+		  		fqdn.sub(domain,'') # Remove off, but returns that piece, so do two-liner
+		  		hostname = fqdn # MUST be on separate line
+		  		return hostname
 		  	else
-		  		return domain = fqdn
+		  		return fqdn
 		  	end
 		  	return nil
 		end
@@ -33,14 +37,14 @@ module Multisite # SWEET!!!!
 			Rails.configuration.try(:internal_domains) || self.abort # Stored in config/application.rb
 		end
 
-		def Multisite.http_host
+		def Multisite.http_host(request)
 			request.host.sub(/^www[.]/,"")
 		end
 
-		def Multisite.default_domain
+		def Multisite.default_domain(request)
 			domain = internal_domains[0]
 			internal_domains.each do |d|
-				if http_host.ends_with? d
+				if http_host(request).ends_with? d
 					return d
 				end
 			end

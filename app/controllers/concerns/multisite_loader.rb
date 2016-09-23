@@ -21,7 +21,7 @@ module Concerns
 			end
 
 			def loadSite
-				sitename = Multisite.site_specified 
+				sitename = Multisite.site_specified(request)
 				# give domain if custom (not internal), otherwise hostname, or nil if nothing
 
 				logger.debug("SITENAME="+sitename)
@@ -50,7 +50,7 @@ module Concerns
 				@site_design = Multisite::SiteDesign.instance
 				@sidebar = Multisite::Sidebar.instance
 
-				@default_domain = Multisite.default_domain
+				@default_domain = Multisite.default_domain(request)
 				
 			end
 
