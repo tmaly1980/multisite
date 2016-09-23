@@ -43,10 +43,7 @@ module Multisite
 				sign_in(@site.user)
 
 				# Redirect to site, passing cookie along for auto sign-in
-				
-
-				logger.debug("COOK="+cookiekey+":"+cookieval)
-
+			
 				redirect_to "http://"+@site.hostname+"."+Multisite.default_domain+"/?"+sessionCookieString
 			else
 				render :new
