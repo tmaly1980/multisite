@@ -3,6 +3,7 @@ require "multisite/engine"
 module Multisite # SWEET!!!!
 	class Specified
 		def self.matches?(request) # For router, asked for specific site
+			STDERR.puts("STDERR_spec="+Multisite.site_specified)
 			logger.debug("SPECIFYING?="+Multisite.site_specified)
 			Multisite.site_specified
 		end
