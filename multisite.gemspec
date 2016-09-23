@@ -6,7 +6,7 @@ require "multisite/version"
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "multisite"
-  s.version     = Multisite::VERSION
+  s.version     = "1.0.0"#Multisite::VERSION
   s.authors     = ["Tomas Maly"]
   s.email       = ["tmaly1980@gmail.com"]
   s.homepage    = "http://hopefulpress.com/"
