@@ -3,16 +3,16 @@ require "multisite/engine"
 module Multisite # SWEET!!!!
 	class Specified
 		def self.matches?(request) # For router, asked for specific site
-			STDERR.puts("STDERR_spec="+Multisite.site_specified)
-			logger.debug("SPECIFYING?="+Multisite.site_specified)
-			Multisite.site_specified(request)
+			specified = Multisite.site_specified(request)
+			logger.debug("SPECIFYING?="+specified)
+			return !specified.empty?
 		end
 	end
 
 	class NotSpecified
 		def self.matches?(request) # For router, asked for specific site
-			logger.debug("NOT SPECIFYING?="+Multisite.site_specified)
-			return (Multisite::Specified.matches? request).empty?
+			logger.debug("NOT SPECIFYING!")
+			return !Multisite::Specified.matches?(request)
 		end
 	end
 
