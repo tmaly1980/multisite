@@ -4,12 +4,12 @@ module Multisite # SWEET!!!!
 	STDERR.puts("LOADED MULT")
 
 	def site_specified # give domain if custom (not internal), otherwise hostname, or nil if on www
-		STDERR.puts("SITE_SPEC!!! =)")
+		STDERR.puts("SITE_SPEC!!!")
 		fqdn = request.host.sub(/^www[.]/,"") # remove 'www'
 
 	  	# NEED TO ACCOUNT FOR internal_domains
 	  	if(fqdn.end_with? default_domain) # just hostname
-	  		fqdn.sub(default_domain.'') # Remove off
+	  		fqdn.sub(default_domain,'') # Remove off
 	  	else
 	  		domain = fqdn
 	  	end
