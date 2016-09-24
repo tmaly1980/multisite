@@ -1,7 +1,5 @@
 require_dependency "multisite/multisite_controller"
 
-
-# singleton
 module Multisite
 	class SitesController < MultisiteController
 
@@ -53,6 +51,14 @@ module Multisite
 	  private
 	  	def site_params
 			params.require(:site).permit!
+		end
+
+		def private_methods
+		 	['delete','destroy','edit'] # can create own site
+		end
+
+		def public_methods # TODO
+			['new','create']
 		end
 	end
 end
