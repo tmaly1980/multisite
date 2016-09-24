@@ -1,5 +1,5 @@
 Multisite::Engine.routes.draw do
-	get '/site_designs/theme(/:theme.css)', to: 'site_designs#theme'
+	get '/site_designs/theme(/:theme).css', to: 'site_designs#theme', as: 'theme_css'
 
-	resource :sites, :site_design, :sidebar
+	resources :sites, :site_design, :sidebar
 end

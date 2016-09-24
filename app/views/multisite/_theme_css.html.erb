@@ -3,4 +3,4 @@
 THEME=
 <%#= @siteDesign.to_yaml %>
 -->
-<link rel="stylesheet" href="/multisite/site_designs/theme/<%= @siteDesign.try(:theme) || 'default' %>.css"/>
+<link rel="stylesheet" href="<%= multisite.theme_css_path(@siteDesign.try(:theme) || 'default') %>.css"/>
