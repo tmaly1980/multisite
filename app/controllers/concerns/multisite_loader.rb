@@ -48,7 +48,7 @@ module Concerns
 				ENV['multisite_site_id'] = @currentSite.id.to_s
 
 				@site_design = Multisite::SiteDesign.instance
-				@sidebar = Multisite::Sidebar.instance
+				#@sidebar = Multisite::Sidebar.instance
 
 				@default_domain = Multisite.default_domain(request)
 				

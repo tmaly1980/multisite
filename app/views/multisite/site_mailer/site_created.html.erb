@@ -1,0 +1,13 @@
+<h2>Your website for <%= @site.title %> has been created</h2>
+
+<p>Please keep this email for your records. Your website's new address is:
+
+<p><b><%= link_to(@site_url) %></b>
+
+<p>To manage your website, simply visit the above URL and click on 'Sign In' in the top corner of the screen. 
+
+<p> After you finish the setup process, you'll be able to start adding new content or create user accounts so others can help too.
+
+<p> Remember, your email is used to sign in: <b><%= @user.email %></b>
+
+

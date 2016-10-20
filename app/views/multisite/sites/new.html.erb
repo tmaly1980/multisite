@@ -1,19 +1,2 @@
-<%
-@page_title = "Sign Up" 
-%>
-
-<div class='form'>
-<%= bootstrap_form_for @site do |f| %>
-	<%= title_field(f); %>
-	<%= f.text_field 'hostname' %>
-
-	<% f.fields_for :user do |u| %>
-		<%= u.text_field 'email' %>
-		<%= u.password_field 'password' %>
-	<% end %>
-
-	<p>
-		<%= save_button(f)  %>
-	</p>
-<% end %>
-</div>
+<% @page_title = 'Sign Up' %>
+<%= render "multisite.sites.form", site: @site %>

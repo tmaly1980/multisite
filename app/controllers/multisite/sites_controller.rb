@@ -40,6 +40,10 @@ module Multisite
 				# login as account.
 				sign_in(@site.user)
 
+				# Send email to user of new site/link
+				Multisite::SiteMailer.site_created(@site,@site.url(@default_domain))
+				# Only need to pass default domain because we're not on the site yet.
+
 				# Redirect to site, passing cookie along for auto sign-in
 			
 				redirect_to "http://"+@site.hostname+"."+Multisite.default_domain+"/?"+sessionCookieString
@@ -53,12 +57,8 @@ module Multisite
 			params.require(:site).permit!
 		end
 
-		def private_methods
-		 	['delete','destroy','edit'] # can create own site
-		end
-
-		def public_methods # TODO
-			['new','create']
+		def user_methods # If specific controller wants to block something else, it can alter.
+			super - ['new','create'] # Will allow new/create for anonymous
 		end
 	end
 end
