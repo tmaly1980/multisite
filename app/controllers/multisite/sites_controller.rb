@@ -32,10 +32,9 @@ module Multisite
 			@site = Multisite::Site.new(site_params)
 			if @site.save
 				# Save email account. No validation/conflict because new site
-				@site.user = User.new(site_params[:user])
+				# May already be signed in via facebook/etc
+				@site.user = current_user? ? current_user : User.new(site_params[:user])
 				@site.user.save
-
-				# XXX TODO
 				
 				# login as account.
 				sign_in(@site.user)
@@ -46,10 +45,26 @@ module Multisite
 
 				# Redirect to site, passing cookie along for auto sign-in
 			
-				redirect_to "http://"+@site.hostname+"."+Multisite.default_domain+"/?"+sessionCookieString
+				##redirect_to "http://"+@site.hostname+"."+Multisite.default_domain+"/?"+sessionCookieString
 			else
 				render :new
 			end
+		end
+
+		def available
+			if site_params[:hostname]
+				if Multisite::Site.exists?(hostname: site_params[:hostname])
+					respond_to do |format|
+						format.json { render(json: { error: "Sorry, that website is already taken" }) and return }
+					end
+				end
+			end
+
+			respond_to do |format|
+				format.json { render json: { success: 'That website is available!' } }
+			end
+
+
 		end
 	
 	  private

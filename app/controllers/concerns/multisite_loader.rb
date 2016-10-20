@@ -21,6 +21,9 @@ module Concerns
 			end
 
 			def loadSite
+
+				@default_domain = Multisite.default_domain(request)  # always available, even www
+				
 				sitename = Multisite.site_specified(request)
 				# give domain if custom (not internal), otherwise hostname, or nil if nothing
 
@@ -49,9 +52,6 @@ module Concerns
 
 				@site_design = Multisite::SiteDesign.instance
 				#@sidebar = Multisite::Sidebar.instance
-
-				@default_domain = Multisite.default_domain(request)
-				
 			end
 
 			def invalidSite

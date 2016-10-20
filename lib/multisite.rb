@@ -17,6 +17,8 @@ module Multisite # SWEET!!!!
 		def Multisite.site_specified(request) # give domain if custom (not internal), otherwise hostname, or nil if on www
 			fqdn = request.host.sub(/^www[.]/,"") # remove 'www'
 
+			#abort fqdn.inspect
+
 		  	# NEED TO ACCOUNT FOR internal_domains
 		  	domain = default_domain(request)
 
@@ -31,7 +33,7 @@ module Multisite # SWEET!!!!
 		end
 
 		def Multisite.internal_domains
-			Rails.configuration.try(:internal_domains) || self.abort # Stored in config/application.rb
+			Rails.configuration.try(:internal_domains) || self.abortRequest # Stored in config/application.rb
 		end
 
 		def Multisite.http_host(request)
@@ -49,7 +51,7 @@ module Multisite # SWEET!!!!
 			return domain
 		end
 
-		def Multisite.abort
+		def Multisite.abortRequest
 			logger.fatal("Please define 'Rails.configuration.internal_domains' in config/application.rb to enable multi-site support")
 			raise Error.new("Sorry, multisite support is not enabled.")
 		end
