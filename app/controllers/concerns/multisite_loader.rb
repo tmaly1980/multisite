@@ -10,6 +10,10 @@ module Concerns
 				Rails.application.config.session_options[:key]
 			end
 
+			def serverPort! # Append to urls, only if needed
+				request.port != 80 ? ":"+request.port : nil
+			end
+
 			def sessionQueryString
 				sessionKey+"="+cookies[sessionKey]
 			end
@@ -29,6 +33,8 @@ module Concerns
 
 				logger.debug("SITENAME="+sitename)
 
+				#abort sitename
+
 				# look up 
 				if(sitename[/\./]) # Domain-y
 					logger.debug("DOMAIN="+sitename)
@@ -40,11 +46,14 @@ module Concerns
 					@currentSite = Multisite::Site.find_by_hostname(sitename)
 					logger.debug(@currentSite)
 				end
-				if(!@currentSite)
+
+				if(!sitename) # !@currentSite)
 					return # www
 				end
 
 				return invalidSite if !@currentSite
+
+				#abort "POO"
 
 
 				# store site_id globally

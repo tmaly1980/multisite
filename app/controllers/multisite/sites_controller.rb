@@ -29,26 +29,30 @@ module Multisite
 			@site = Multisite::Site.new	
 		end
 		def create
-			@site = Multisite::Site.new(site_params)
-			if @site.save
-				# Save email account. No validation/conflict because new site
-				# May already be signed in via facebook/etc
-				@site.user = current_user? ? current_user : User.new(site_params[:user])
-				@site.user.save
+			# XXX MAKE ATOMIC TRANSACTION
+			Multisite::Site.transaction do
+				@site = Multisite::Site.new(site_params)
+				if @site.save
+					# Save email account. No validation/conflict because new site
+					# May already be signed in via facebook/etc
+					@site.user = current_user ? current_user : User.new(site_params[:user])
+					@site.user.save
+					
+					# login as account.
+					sign_in(@site.user)
+
+					# Send email to user of new site/link
+					Multisite::SiteMailer.site_created(@site,@site.url(@default_domain))
+					# Only need to pass default domain because we're not on the site yet.
+
+					# Redirect to site, passing cookie along for auto sign-in
 				
-				# login as account.
-				sign_in(@site.user)
-
-				# Send email to user of new site/link
-				Multisite::SiteMailer.site_created(@site,@site.url(@default_domain))
-				# Only need to pass default domain because we're not on the site yet.
-
-				# Redirect to site, passing cookie along for auto sign-in
-			
-				##redirect_to "http://"+@site.hostname+"."+Multisite.default_domain+"/?"+sessionCookieString
-			else
-				render :new
+					redirect_to "http://"+@site.hostname+"."+@default_domain+serverPort!+"/?"+sessionQueryString
+					return
+				end
 			end
+
+				render :new
 		end
 
 		def available
@@ -57,11 +61,17 @@ module Multisite
 					respond_to do |format|
 						format.json { render(json: { error: "Sorry, that website is already taken" }) and return }
 					end
+				else
+					respond_to do |format|
+						format.json { render json: { success: 'That website is available!' } }
+					end
 				end
-			end
+			else
 
-			respond_to do |format|
-				format.json { render json: { success: 'That website is available!' } }
+				respond_to do |format|
+					format.json { render json: { error: 'Please provide a hostname' } }
+				end
+				
 			end
 
 

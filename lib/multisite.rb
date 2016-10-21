@@ -17,14 +17,17 @@ module Multisite # SWEET!!!!
 		def Multisite.site_specified(request) # give domain if custom (not internal), otherwise hostname, or nil if on www
 			fqdn = request.host.sub(/^www[.]/,"") # remove 'www'
 
+			#abort 'poo'
+
 			#abort fqdn.inspect
 
 		  	# NEED TO ACCOUNT FOR internal_domains
 		  	domain = default_domain(request)
 
 		  	if(fqdn.end_with? domain) # just hostname
-		  		fqdn.sub!(domain,'') # Remove off, but returns that piece, so do two-liner
+		  		fqdn.sub!('.'+domain,'') # Remove off, but returns that piece, so do two-liner
 		  		hostname = fqdn # MUST be on separate line
+		  		#abort hostname
 		  		return hostname
 		  	else
 		  		return fqdn

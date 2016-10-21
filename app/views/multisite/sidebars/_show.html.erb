@@ -1,8 +1,8 @@
 <% if can? :update, @sidebar %>
 	<div class='right_align'>
-		<%= edit_link("", multisite.edit_sidebar_path, "data-update": '#sidebar', class: "btn btn-warning btn-xs") %>
+		<%#= edit_link("", multisite.edit_sidebar_path, "data-update": '#sidebar', class: "btn btn-warning btn-xs") %>
 	</div>
-	<% if @sidebar.created_at.to_s == @sidebar.updated_at.to_s %>
+	<% if @sidebar&.created_at.to_s == @sidebar.updated_at.to_s %>
 		<div class='alert alert-info'>
 			<%= render 'multisite/sidebars/customize' %>
 		</div>
