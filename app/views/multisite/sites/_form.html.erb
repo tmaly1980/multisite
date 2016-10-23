@@ -1,0 +1,38 @@
+<%= simple_form_for(@site) do |f| %>
+	<%= f.title('title', placeholder: 'Your Site Name') %>
+
+    <%= f.input :hostname, wrapper: :vertical_input_group, hint: 'Letters and numbers only (no spaces or punctuation)' do %>
+      <span class="input-group-addon">http://</span>
+      <%= f.input_field :hostname, label: "Choose a website address", class: "form-control right_align", required: true, "data-validate-url": "/sites/available" %>
+      <span class="input-group-addon">.<%= @default_domain %></span>
+    <% end %>
+
+		<script>
+			$('#SiteHostname').filter_input({regex: '[^a-zA-Z0-9_]+', replace: '-'});
+		</script>
+
+		<h4>Your Information</h4>
+		<input type='text' style='display:none;'/>
+		<input type='password' style='display:none;'/>
+
+		<%#if current_user %>
+			<%#= render 'users/infobox' %>
+		<%#else %>
+			<!-- <div class='center_align'>
+				<%#= gblink_to('fa-facebook', 'Sign in via Facebook',omniauth_authorize_path(:user, :facebook, goto: request.original_url)) %>
+				<div class='bold'>&ndash; OR &ndash;</div>
+			</div> -->
+
+
+			<%= f.simple_fields_for :user, f.object.user_or_build do |u| %>
+				<%= u.field :email, placeholder: "Your Email", label: false, required: true %>
+				<div class='row'>
+					<%= u.field :first_name, placeholder: "First Name", label: false, div: "col-md-6", required: true %>
+					<%= u.field :last_name, placeholder: "Last Name", label: false, div: "col-md-6", required: true %>	
+				</div>
+				<%= u.field :password, placeholder: "Password", label: false, required: true %>
+				<%= u.field :password_confirmation, placeholder: "Verify Password", label: false, required: true %>
+			<% end %>
+		<%#end %>
+	<%= f.save "Create Site" %>
+<% end %>

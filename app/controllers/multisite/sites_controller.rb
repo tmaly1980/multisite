@@ -31,23 +31,33 @@ module Multisite
 		def create
 			# XXX MAKE ATOMIC TRANSACTION
 			Multisite::Site.transaction do
+				#abort site_params.inspect
 				@site = Multisite::Site.new(site_params)
 				if @site.save
 					# Save email account. No validation/conflict because new site
 					# May already be signed in via facebook/etc
-					@site.user = current_user ? current_user : User.new(site_params[:user])
+					# @site.user = current_user ? current_user : User.new(site_params[:user])
+					# @site.user.save
+
+					# Save owner 
+					# Since Site belongsTo User, Site has user_id, but User doesn't have site_id
+					# So we have to manually assign site_id to User
+					@site.user.multisite_site_id = @site.id
 					@site.user.save
+
+					#abort(@site.user.inspect)
 					
 					# login as account.
 					sign_in(@site.user)
 
 					# Send email to user of new site/link
-					Multisite::SiteMailer.site_created(@site,@site.url(@default_domain))
+					Multisite::SiteMailer.site_created(@site,@site.url(@default_domain,serverPort!)).deliver_later
 					# Only need to pass default domain because we're not on the site yet.
 
 					# Redirect to site, passing cookie along for auto sign-in
 				
-					redirect_to "http://"+@site.hostname+"."+@default_domain+serverPort!+"/?"+sessionQueryString
+					redirect_to "http://"+@site.hostname+"."+@default_domain+serverPort!+"/?"+sessionQueryString,
+						flash[:notice] => "Your website has been created"
 					return
 				end
 			end

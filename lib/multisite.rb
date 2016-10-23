@@ -24,15 +24,17 @@ module Multisite # SWEET!!!!
 		  	# NEED TO ACCOUNT FOR internal_domains
 		  	domain = default_domain(request)
 
-		  	if(fqdn.end_with? domain) # just hostname
-		  		fqdn.sub!('.'+domain,'') # Remove off, but returns that piece, so do two-liner
+		  	if(fqdn == domain)
+		  		return '' # on marketing site
+		  	elsif(fqdn.end_with? domain) # just hostname
+		  		fqdn.gsub!('.'+domain,'') # Remove off, but returns that piece, so do two-liner
 		  		hostname = fqdn # MUST be on separate line
 		  		#abort hostname
 		  		return hostname
 		  	else
 		  		return fqdn
 		  	end
-		  	return nil
+		  	return ''
 		end
 
 		def Multisite.internal_domains

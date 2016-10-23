@@ -6,21 +6,34 @@ module Concerns
 			before_action :loadSiteUserSession
 			before_action :loadSite
 
+
 			def sessionKey
 				Rails.application.config.session_options[:key]
 			end
 
 			def serverPort! # Append to urls, only if needed
-				request.port != 80 ? ":"+request.port : nil
+				request.port != 80 ? ":"+request.port.to_s : ''
 			end
 
 			def sessionQueryString
-				sessionKey+"="+cookies[sessionKey]
+				# sessionKey+"="+cookies[sessionKey] # weird... perhaps encoded?
+				#logger.fatal "\n\n!!!!!!!!!!!!!!!!!!!!!!! PASS_SESS="+request.session_options[:id]+"\n\n"
+
+				sessionKey+"="+request.session_options[:id]
+				# Is session id same as db after user.save ?
+				# or does user.save erase old session and create new one? (because new user_id)
 			end
 
 			def loadSiteUserSession # Might be cross-site, ie www?_rescue_session=1234 => mysite?_rescue_session=1234
+				# XXX seems to wipe out what was already there by what we have already here....
+				# (writes without loads)
+				#logger.fatal "\n\n!!!!!!!!!!! SESS_IS_NOW="+cookies[sessionKey]+"\n\n"
+
 				if sessval = params[sessionKey]
+					#logger.fatal "\n\n !!!!!!!!!!!!!!! LOAD_SESS="+sessval+"\n\n"
+
 					request.session_options[:id] = sessval
+					#abort sessval+request.session.to_hash.to_yaml
 				end
 			end
 
@@ -47,9 +60,11 @@ module Concerns
 					logger.debug(@currentSite)
 				end
 
-				if(!sitename) # !@currentSite)
+				if(sitename.empty?) # !@currentSite)
 					return # www
 				end
+
+				#abort sitename
 
 				return invalidSite if !@currentSite
 
