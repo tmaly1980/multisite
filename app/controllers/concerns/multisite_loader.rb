@@ -41,15 +41,21 @@ module Concerns
 
 				@default_domain = Multisite.default_domain(request)  # always available, even www
 				
-				sitename = Multisite.site_specified(request)
-				# give domain if custom (not internal), otherwise hostname, or nil if nothing
+				if request.params[:site_id] # MUST be done here so we still use non-site routing
+					sitename = request.params[:site_id] 
+				else
+					sitename = Multisite.site_specified(request)
+					# give domain if custom (not internal), otherwise hostname, or nil if nothing
+				end
 
 				logger.debug("SITENAME="+sitename)
 
-				#abort sitename
+				# abort sitename
 
 				# look up 
-				if(sitename[/\./]) # Domain-y
+				if(sitename.is_a? Numeric) # Passed id in path
+					@currentSite = Multisite::Site.find(sitename)
+				elsif(sitename[/\./]) # Domain-y
 					logger.debug("DOMAIN="+sitename)
 					@currentSite = Multisite::Site.find_by_domain(sitename)
 					logger.debug(@currentSite)

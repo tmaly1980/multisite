@@ -13,8 +13,12 @@ module Multisite # SWEET!!!!
 			return !Multisite::Specified.matches?(request)
 		end
 	end
+		def Multisite.site_specified?(request) # Boolean
+			Multisite.site_specified(request).present?
+		end
 
 		def Multisite.site_specified(request) # give domain if custom (not internal), otherwise hostname, or nil if on www
+
 			fqdn = request.host.sub(/^www[.]/,"") # remove 'www'
 
 			#abort 'poo'
