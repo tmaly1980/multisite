@@ -38,9 +38,10 @@ module Concerns
 			end
 
 			def loadSite
+				# We already use ENV for site_id, so why not....
+				ENV['default_domain'] = @default_domain = Multisite.default_domain(request)  # always available, even www
+				ENV['server_port'] = request.port.to_s
 
-				@default_domain = Multisite.default_domain(request)  # always available, even www
-				
 				if request.params[:site_id] # MUST be done here so we still use non-site routing
 					sitename = request.params[:site_id] 
 				else

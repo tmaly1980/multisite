@@ -18,7 +18,15 @@ module Multisite
 			end 
 		end
 
-		def url(default_domain,port=80)
+		def default_domain
+			ENV['default_domain']
+		end
+
+		def port
+			ENV['server_port']
+		end
+
+		def url #(default_domain,port=80)
 			if(!domain)
 				domain = hostname + "." + default_domain
 			end
