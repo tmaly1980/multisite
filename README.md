@@ -25,11 +25,13 @@ First, mount the engine:
   mount Multisite::Engine, at: "/"
 ```
 
-Add to close to the top of app/controllers/application_controller.rb:
+Add to close to the top of app/controllers/application_controller.rb, this will do hostname detection on startup:
 
 ```
   include Concerns::MultisiteLoader
 ```
+
+An error page views/multisite/sites/not_found.html.erb is used when trying to access a site not found. Feel free to copy that to your main application.
 
 ### Hostname detection/routing
 
